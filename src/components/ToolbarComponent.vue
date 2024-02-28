@@ -1,9 +1,11 @@
 <template>
-  <div class="flex h-12">
+  <div class="flex h-10">
     <div
-      class="aspect-square h-full rounded-full bg-white"
+      class="flex aspect-square h-full items-center justify-center rounded-full bg-white text-green-700"
       @click="cellsStore.step()"
-    />
+    >
+      <v-icon name="fa-play" />
+    </div>
   </div>
 </template>
 
