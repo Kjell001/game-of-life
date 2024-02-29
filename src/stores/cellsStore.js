@@ -6,6 +6,7 @@ const NEIGHBOURS = [-F - 1, -F, -F + 1, -1, 1, F - 1, F, F + 1]
 export default defineStore("cellsStore", {
   state: () => ({
     active: new Set(),
+    stale: true,
   }),
   actions: {
     getIndex(i, j) {
@@ -17,6 +18,7 @@ export default defineStore("cellsStore", {
         this.active.delete(index)
       } else {
         this.active.add(index)
+        this.stale = false
       }
     },
     step() {
@@ -31,11 +33,15 @@ export default defineStore("cellsStore", {
       // Populate new set of active cells
       const previous = new Set(this.active)
       this.active.clear()
+      let stale = true
       for (const [index, count] of Object.entries(counts)) {
-        if (count === 3 || (count === 2 && previous.has(parseInt(index)))) {
+        const occupied = previous.has(parseInt(index))
+        if (count === 3 || (count === 2 && occupied)) {
           this.active.add(parseInt(index))
+          stale = stale && occupied
         }
       }
+      this.stale = stale
     },
   },
 })
